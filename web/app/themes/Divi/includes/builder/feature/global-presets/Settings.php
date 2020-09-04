@@ -1,14 +1,14 @@
 <?php
 
 class ET_Builder_Global_Presets_Settings {
-	const CUSTOM_DEFAULTS_OPTION = 'builder_custom_defaults';
+	const CUSTOM_DEFAULTS_OPTION            = 'builder_custom_defaults';
 	const CUSTOM_DEFAULTS_UNMIGRATED_OPTION = 'builder_custom_defaults_unmigrated';
 	const CUSTOMIZER_SETTINGS_MIGRATED_FLAG = 'customizer_settings_migrated_flag';
 
-	const GLOBAL_PRESETS_OPTION = 'builder_global_presets';
+	const GLOBAL_PRESETS_OPTION         = 'builder_global_presets';
 	const CUSTOM_DEFAULTS_MIGRATED_FLAG = 'custom_defaults_migrated_flag';
-	const MODULE_PRESET_ATTRIBUTE = '_module_preset';
-	const MODULE_INITIAL_PRESET_ID = '_initial';
+	const MODULE_PRESET_ATTRIBUTE       = '_module_preset';
+	const MODULE_INITIAL_PRESET_ID      = '_initial';
 
 	/**
 	 * @var array - The list of the product short names we allowing to do a Module Customizer settings migration rollback
@@ -87,13 +87,13 @@ class ET_Builder_Global_Presets_Settings {
 	/**
 	 * Returns instance of the singleton class
 	 *
-	 * @since ??
+	 * @since 4.5.0
 	 *
 	 * @return ET_Builder_Global_Presets_Settings
 	 */
 	public static function instance() {
 		if ( ! isset( self::$_instance ) ) {
-			self::$_instance = new self;
+			self::$_instance = new self();
 		}
 
 		return self::$_instance;
@@ -103,7 +103,7 @@ class ET_Builder_Global_Presets_Settings {
 	 * Returns the list of additional module slugs used to separate Global Presets settings.
 	 * For example defaults for sections must be separated depends on the section type (regular, fullwidth or specialty).
 	 *
-	 * @since ??
+	 * @since 4.5.0
 	 *
 	 * @param $module_slug - The module slug for which additional slugs are looked up
 	 *
@@ -120,7 +120,7 @@ class ET_Builder_Global_Presets_Settings {
 	/**
 	 * Returns builder Global Presets settings.
 	 *
-	 * @since ??
+	 * @since 4.5.0
 	 *
 	 * @return object
 	 */
@@ -131,7 +131,7 @@ class ET_Builder_Global_Presets_Settings {
 	/**
 	 * Checks if the gives preset ID exists
 	 *
-	 * @since ??
+	 * @since 4.5.0
 	 *
 	 * @param string $module_slug
 	 * @param string $preset_id
@@ -145,7 +145,7 @@ class ET_Builder_Global_Presets_Settings {
 	/**
 	 * Returns a default preset ID for the given module type
 	 *
-	 * @since ??
+	 * @since 4.5.0
 	 *
 	 * @param string $module_slug
 	 *
@@ -161,10 +161,10 @@ class ET_Builder_Global_Presets_Settings {
 	 * Returns the module preset ID
 	 * If the preset ID doesn't exist it will return the default preset ID
 	 *
-	 * @since ??
+	 * @since 4.5.0
 	 *
 	 * @param string $module_slug
-	 * @param array $module_attrs
+	 * @param array  $module_attrs
 	 *
 	 * @return string
 	 */
@@ -182,7 +182,7 @@ class ET_Builder_Global_Presets_Settings {
 	 * Returns the module preset by the given preset ID
 	 * Returns an empty object if no preset found
 	 *
-	 * @since ??
+	 * @since 4.5.0
 	 *
 	 * @param string $module_slug
 	 * @param string $preset_id
@@ -200,10 +200,10 @@ class ET_Builder_Global_Presets_Settings {
 	/**
 	 * Returns Global Presets settings for the particular module.
 	 *
-	 * @since ??
+	 * @since 4.5.0
 	 *
 	 * @param string $module_slug - The module slug
-	 * @param array $attrs        - The module attributes
+	 * @param array  $attrs        - The module attributes
 	 *
 	 * @return array
 	 */
@@ -221,8 +221,8 @@ class ET_Builder_Global_Presets_Settings {
 
 	/**
 	 * Checks whether customizer settings migrated or not
-	 * 
-	 * @since ??
+	 *
+	 * @since 4.5.0
 	 *
 	 * @return bool
 	 */
@@ -233,7 +233,7 @@ class ET_Builder_Global_Presets_Settings {
 	/**
 	 * Checks whether Custom Defaults settings migrated or not
 	 *
-	 * @since ??
+	 * @since 4.5.0
 	 *
 	 * @return bool
 	 */
@@ -244,10 +244,9 @@ class ET_Builder_Global_Presets_Settings {
 	/**
 	 * Migrates Module Customizer settings to Custom Defaults
 	 *
-	 * @since ??
+	 * @since 4.5.0
 	 *
 	 * @param array $defaults - The list of modules default settings
-	 *
 	 */
 	public function migrate_customizer_settings( $defaults ) {
 		$template_directory = get_template_directory();
@@ -274,15 +273,15 @@ class ET_Builder_Global_Presets_Settings {
 	/**
 	 * Generates `_initial` module presets structure
 	 *
-	 * @since ??
+	 * @since 4.5.0
 	 *
 	 * @param string $module_slug
-	 * @param array $all_modules
+	 * @param array  $all_modules
 	 *
 	 * @return object
 	 */
 	public static function generate_module_initial_presets_structure( $module_slug, $all_modules ) {
-		$structure = (object) array();
+		$structure             = (object) array();
 		$module_slug_converted = isset( self::$_module_import_types_conversion_map[ $module_slug ] )
 			? self::$_module_import_types_conversion_map[ $module_slug ]
 			: $module_slug;
@@ -291,13 +290,13 @@ class ET_Builder_Global_Presets_Settings {
 			? sprintf( esc_html__( '%s Preset', 'et_builder' ), $all_modules[ $module_slug_converted ]->name )
 			: esc_html__( 'Preset', 'et_builder' );
 
-		$structure->default = "_initial";
-		$structure->presets = (object) array();
-		$structure->presets->_initial = (object) array();
-		$structure->presets->_initial->name = et_core_esc_previously( "{$preset_name} 1" );
-		$structure->presets->_initial->created = 0;
-		$structure->presets->_initial->updated = 0;
-		$structure->presets->_initial->version = ET_BUILDER_PRODUCT_VERSION;
+		$structure->default                     = '_initial';
+		$structure->presets                     = (object) array();
+		$structure->presets->_initial           = (object) array();
+		$structure->presets->_initial->name     = et_core_esc_previously( "{$preset_name} 1" );
+		$structure->presets->_initial->created  = 0;
+		$structure->presets->_initial->updated  = 0;
+		$structure->presets->_initial->version  = ET_BUILDER_PRODUCT_VERSION;
 		$structure->presets->_initial->settings = (object) array();
 
 		return $structure;
@@ -306,7 +305,7 @@ class ET_Builder_Global_Presets_Settings {
 	/**
 	 * Converts Custom Defaults to the new Global Presets format
 	 *
-	 * @since ??
+	 * @since 4.5.0
 	 *
 	 * @param object $custom_defaults - The previous Custom Defaults
 	 *
@@ -314,10 +313,10 @@ class ET_Builder_Global_Presets_Settings {
 	 */
 	public static function migrate_custom_defaults_to_global_presets( $custom_defaults ) {
 		$all_modules = ET_Builder_Element::get_modules();
-		$presets = (object) array();
+		$presets     = (object) array();
 
 		foreach ( $custom_defaults as $module => $settings ) {
-			$presets->$module = ET_Builder_Global_Presets_Settings::generate_module_initial_presets_structure( $module, $all_modules );
+			$presets->$module = self::generate_module_initial_presets_structure( $module, $all_modules );
 
 			foreach ( $settings as $setting => $value ) {
 				$presets->$module->presets->_initial->settings->$setting = $value;
@@ -329,11 +328,11 @@ class ET_Builder_Global_Presets_Settings {
 
 	/**
 	 * Migrates existing Custom Defaults to the Global Presets structure
-	 * 
-	 * @since ??
+	 *
+	 * @since 4.5.0
 	 */
 	public function migrate_custom_defaults() {
-		if ( et_is_builder_plugin_active() || ET_Builder_Global_Presets_Settings::are_custom_defaults_migrated() ) {
+		if ( et_is_builder_plugin_active() || self::are_custom_defaults_migrated() ) {
 			return;
 		}
 
@@ -343,18 +342,18 @@ class ET_Builder_Global_Presets_Settings {
 			$custom_defaults = (object) array();
 		}
 
-		$global_presets = ET_Builder_Global_Presets_Settings::migrate_custom_defaults_to_global_presets( $custom_defaults );
+		$global_presets = self::migrate_custom_defaults_to_global_presets( $custom_defaults );
 
 		et_update_option( self::GLOBAL_PRESETS_OPTION, $global_presets );
 		$this->_settings = $global_presets;
 
 		et_update_option( self::CUSTOM_DEFAULTS_MIGRATED_FLAG, true );
 	}
-	
+
 	/**
 	 * Handles theme version rollback.
 	 *
-	 * @since ??
+	 * @since 4.5.0
 	 *
 	 * @param string $product_name - The short name of the product rolling back.
 	 * @param string $rollback_from_version
@@ -375,10 +374,10 @@ class ET_Builder_Global_Presets_Settings {
 	 * Used to separate Global Presets settings for modules sharing the same slug but having different meaning
 	 * For example: Regular, Fullwidth and Specialty section types
 	 *
-	 * @since ??
+	 * @since 4.5.0
 	 *
 	 * @param string $type - The module type (slug)
-	 * @param array $attrs - The module attributes
+	 * @param array  $attrs - The module attributes
 	 *
 	 * @return string      - The converted module type (slug)
 	 */
@@ -397,7 +396,7 @@ class ET_Builder_Global_Presets_Settings {
 	/**
 	 * Converts Section module slug to appropriate slug used in Global Presets
 	 *
-	 * @since ??
+	 * @since 4.5.0
 	 *
 	 * @param array $attrs - The section attributes
 	 *
@@ -418,7 +417,7 @@ class ET_Builder_Global_Presets_Settings {
 	/**
 	 * Converts Slide module slug to appropriate slug used in Global Presets
 	 *
-	 * @since ??
+	 * @since 4.5.0
 	 *
 	 * @return string - The converted slide type depends on the parent slider type
 	 */
@@ -435,7 +434,7 @@ class ET_Builder_Global_Presets_Settings {
 	/**
 	 * Converts Column module slug to appropriate slug used in Global Presets
 	 *
-	 * @since ??
+	 * @since 4.5.0
 	 *
 	 * @return string - The converted column type
 	 */
@@ -447,7 +446,7 @@ class ET_Builder_Global_Presets_Settings {
 		}
 
 		if ( 'et_pb_specialty_section' === $et_pb_parent_section_type
-		     || ( isset( $attrs['specialty_columns'] ) && '' !== $attrs['specialty_columns'] ) ) {
+			 || ( isset( $attrs['specialty_columns'] ) && '' !== $attrs['specialty_columns'] ) ) {
 			return 'et_pb_column_specialty';
 		}
 
@@ -457,7 +456,7 @@ class ET_Builder_Global_Presets_Settings {
 	/**
 	 * Filters Global Presets setting to avoid non plain values like arrays or objects
 	 *
-	 * @since ??
+	 * @since 4.5.0
 	 *
 	 * @param $value - The Global Presets setting value
 	 *
@@ -471,7 +470,7 @@ class ET_Builder_Global_Presets_Settings {
 	 * Performs Global Presets format normalization.
 	 * Usually used to cast format from array to object
 	 *
-	 * @since ??
+	 * @since 4.5.0
 	 *
 	 * @param $presets - The object representing Global Presets settings
 	 *
@@ -482,12 +481,12 @@ class ET_Builder_Global_Presets_Settings {
 
 		foreach ( $presets as $module => $preset_structure ) {
 			if ( isset( $preset_structure->presets ) ) {
-				$result->$module = (object) array();
+				$result->$module          = (object) array();
 				$result->$module->presets = (object) array();
 
 				foreach ( $preset_structure->presets as $preset_id => $preset ) {
-					$result->$module->presets->$preset_id = (object) array();
-					$result->$module->presets->$preset_id->name = $preset->name;
+					$result->$module->presets->$preset_id          = (object) array();
+					$result->$module->presets->$preset_id->name    = $preset->name;
 					$result->$module->presets->$preset_id->created = $preset->created;
 					$result->$module->presets->$preset_id->updated = $preset->updated;
 					$result->$module->presets->$preset_id->version = $preset->version;
@@ -495,9 +494,13 @@ class ET_Builder_Global_Presets_Settings {
 					if ( isset( $preset->settings ) ) {
 						$result->$module->presets->$preset_id->settings = (object) array();
 
-						$settings_filtered = array_filter( (array) $preset->settings, array( $this,
-							'_filter_global_presets_setting_value'
-						) );
+						$settings_filtered = array_filter(
+							(array) $preset->settings,
+							array(
+								$this,
+								'_filter_global_presets_setting_value',
+							)
+						);
 
 						// Since we still support PHP 5.2 we can't use `array_filter` with array keys
 						// So check if defaults have empty key

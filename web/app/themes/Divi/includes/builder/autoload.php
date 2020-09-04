@@ -2,19 +2,19 @@
 
 function _et_pb_autoload( $class ) {
 	switch ( $class ) {
-		case 'ET_Builder_Section' :
-		case 'ET_Builder_Row' :
-		case 'ET_Builder_Row_Inner' :
-		case 'ET_Builder_Column' :
+		case 'ET_Builder_Section':
+		case 'ET_Builder_Row':
+		case 'ET_Builder_Row_Inner':
+		case 'ET_Builder_Column':
 			require_once 'main-structure-elements.php';
 			break;
-		case 'ET_Builder_Module_Helper_Multi_Value' :
+		case 'ET_Builder_Module_Helper_Multi_Value':
 			require_once 'module/helpers/MultiValue.php';
 			break;
-		case 'ET_Builder_Module_Helper_Overflow' :
+		case 'ET_Builder_Module_Helper_Overflow':
 			require_once 'module/helpers/Overflow.php';
 			break;
-		case 'ET_Builder_Module_Helper_Alignment' :
+		case 'ET_Builder_Module_Helper_Alignment':
 			require_once 'module/helpers/Alignment.php';
 			break;
 		case 'ET_Builder_Module_Helper_Sizing':
@@ -25,6 +25,9 @@ function _et_pb_autoload( $class ) {
 			break;
 		case 'ET_Builder_Module_Hover_Options':
 			require_once 'module/helpers/HoverOptions.php';
+			break;
+		case 'ET_Builder_Module_Sticky_Options':
+			require_once 'module/helpers/StickyOptions.php';
 			break;
 		case 'ET_Builder_Module_Helper_Max_Height':
 			require_once 'module/helpers/MaxHeight.php';
@@ -83,6 +86,9 @@ function _et_pb_autoload( $class ) {
 		case 'ET_Builder_Module_Helper_OptionTemplate':
 			require_once 'module/helpers/OptionTemplate.php';
 			break;
+		case 'ET_Builder_Module_Helper_Style_Processor':
+			require_once 'module/helpers/StyleProcessor.php';
+			break;
 		case 'ET_Builder_Module_Helper_Font':
 			require_once 'module/helpers/Font.php';
 			break;
@@ -123,6 +129,17 @@ function et_pb_height_options( $prefix = '' ) {
 
 function et_pb_hover_options() {
 	return ET_Builder_Module_Hover_Options::get();
+}
+
+/**
+ * Get sticky option instance.
+ *
+ * @since ??
+ *
+ * @return ET_Builder_Module_Sticky_Options
+ */
+function et_pb_sticky_options() {
+	return ET_Builder_Module_Sticky_Options::get();
 }
 
 function et_pb_max_height_options( $prefix = '' ) {
@@ -168,6 +185,37 @@ function et_pb_font_options() {
  */
 function et_pb_background_layout_options() {
 	return ET_Builder_Module_Helper_BackgroundLayout::instance();
+}
+
+/**
+ * Get helper instance
+ *
+ * @since ??
+ *
+ * @param string $helper_name Helper name.
+ *
+ * @return object
+ */
+function et_builder_get_helper( $helper_name ) {
+	switch ( $helper_name ) {
+		case 'sticky':
+			$helper = et_pb_sticky_options();
+			break;
+
+		case 'hover':
+			$helper = et_pb_hover_options();
+			break;
+
+		case 'responsive':
+			$helper = et_pb_responsive_options();
+			break;
+
+		default:
+			$helper = false;
+			break;
+	}
+
+	return $helper;
 }
 
 /**

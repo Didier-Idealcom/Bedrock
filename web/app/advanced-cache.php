@@ -23,10 +23,6 @@ if (
 }
 
 
-if ( file_exists( 'D:\sites\bedrock\web\app\plugins\wp-rocket\inc\vendors/classes/class-rocket-mobile-detect.php' ) && ! class_exists( 'Rocket_Mobile_Detect' ) ) {
-	include_once 'D:\sites\bedrock\web\app\plugins\wp-rocket\inc\vendors/classes/class-rocket-mobile-detect.php';
-}
-
 
 spl_autoload_register(
 	function( $class ) use ( $rocket_path ) {
